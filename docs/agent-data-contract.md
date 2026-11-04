@@ -1,5 +1,7 @@
 # Dữ liệu cho agent: đọc ít trước, truy xuất bằng chứng sau
 
+Phone POC v1.1 hiện có code capture/export riêng, xem [poc-capture.md](poc-capture.md). Các phần mô tả v1 dưới đây là thiết kế nền; không phải tất cả modality/derived processing đã triển khai. Gói phone có audio PCM/anchors tùy chọn và camera clock metadata, chưa có fusion.
+
 ## Mục tiêu
 
 App độc lập thu và liên kết dữ liệu multimodal để hỗ trợ vòng lặp agent xây digital twin. Xem [biểu diễn chung](multimodal-representation.md) cho mô hình raw → liên kết thời gian/tọa độ → artifact tăng cường → twin revision. 2D/3D là các output theo mục tiêu, không có luật fallback 2D tự động. Agent có thể chọn xử lý lại, calibration, thêm modality hoặc yêu cầu thu bổ sung.

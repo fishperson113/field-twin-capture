@@ -27,6 +27,6 @@ Fixture hành lang 47,4 m là **synthetic**, dùng kiểm tra hợp đồng dữ
 
 Có thể thêm tiền tố `uv run` cho các lệnh Python trên. Packager yêu cầu thư mục output mới; xuất `index.json`, `evidence-graph.json`, hướng dẫn agent và raw assets có SHA-256. Graph hiện mới liên kết thành viên session, chưa làm temporal alignment, audio/depth ingest hoặc sensor fusion. Schema dự thảo tại [contracts/evidence-graph.schema.json](contracts/evidence-graph.schema.json).
 
-Đã chạy local: 11 test Python, kiểm tra graph schema/references và skill. Android unit tests và build APK chỉ chạy trên GitHub Actions, không build APK local. Cần kiểm tra vật lý trên điện thoại trước dùng khảo sát thật.
+Đã chạy local: 12 test Python, kiểm tra graph schema/references và skill. Android unit tests và build APK chỉ chạy trên GitHub Actions, không build APK local. Cần kiểm tra vật lý trên điện thoại trước dùng khảo sát thật.
 
 Skill agent: [.agents/skills/reconstruct-indoor-map/SKILL.md](.agents/skills/reconstruct-indoor-map/SKILL.md). Skill nằm trong repo, không thay đổi cấu hình global.

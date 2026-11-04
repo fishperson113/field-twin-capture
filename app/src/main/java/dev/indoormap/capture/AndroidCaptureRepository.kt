@@ -72,7 +72,7 @@ class AndroidCaptureRepository(context: Context) : SensorEventListener {
         cameraInfo = info
         root?.let { if (mutable.value.recording) SessionFiles.write(File(it, "camera.json"), info) }
     }
-    fun message(text: String) { mutable.value = mutable.value.copy(message = text) }
+    fun message(text: String) = synchronized(guard) { mutable.value = mutable.value.copy(message = text) }
 
     suspend fun start(site: String, enableAudio: Boolean) = withContext(Dispatchers.IO) {
         synchronized(guard) {
@@ -172,7 +172,7 @@ class AndroidCaptureRepository(context: Context) : SensorEventListener {
         mutable.value = mutable.value.copy(photoPending = true)
         (root ?: error("No session")).name to SystemClock.elapsedRealtimeNanos()
     }
-    fun photoFailed(reason: String) { mutable.value = mutable.value.copy(photoPending = false, message = "Chụp ảnh lỗi: $reason") }
+    fun photoFailed(reason: String) = synchronized(guard) { mutable.value = mutable.value.copy(photoPending = false, message = "Chụp ảnh lỗi: $reason") }
     fun savePhoto(sessionId: String, requested: Long, image: ImageProxy) = synchronized(guard) {
         try {
             check(mutable.value.recording && root?.name == sessionId) { "Session đã dừng; ảnh chưa được thêm" }

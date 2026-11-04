@@ -24,7 +24,7 @@ RoNIN trong các repo local là reference đang có, không phải dependency b�
 
 ## Audio và cảm biến khác
 
-Chưa chốt engine speech-to-text; transcript phải giữ timestamp spans, speaker/uncertainty khi có, links về audio và các mốc ảnh. Không dùng transcript làm ground truth hình học. Depth, magnetic và các sensor khác cần capability detection, đơn vị/frame/clock riêng. Schema graph chừa modality và provenance; packager v1 hiện chỉ nhập session ảnh/IMU/mốc có sẵn, chưa ingest audio/depth.
+Chưa chốt engine speech-to-text; transcript phải giữ timestamp spans, speaker/uncertainty khi có, links về audio và các mốc ảnh. Không dùng transcript làm ground truth hình học. Phone POC v1.1 thu audio PCM/anchors khi bật tùy chọn và ghi magnetic nếu có sensor; Python validator/packager giữ audio assets/metadata. Depth/LiDAR chưa triển khai. Không có STT hoặc multimodal fusion.
 
 ## Tham khảo logger cho điện thoại phổ thông
 
