@@ -3,7 +3,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
-from map_session import validate, file_hash
+from map_session import validate, file_hash, prepare_agent
 
 FIXTURE = Path(__file__).resolve().parents[1] / 'examples' / 'corridor'
 
@@ -21,6 +21,15 @@ class PhoneExportTests(unittest.TestCase):
 
     def test_v11_audio_validates(self):
         with tempfile.TemporaryDirectory() as temp: validate(self.fixture(temp))
+
+    def test_repackaging_keeps_audio_modality_and_bytes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = self.fixture(temp); output = Path(temp) / 'agent'
+            prepare_agent(root, output)
+            graph = json.loads((output / 'evidence-graph.json').read_text())
+            node = next(n for n in graph['nodes'] if n.get('path') == 'raw/audio/track.pcm')
+            self.assertEqual(node['modality'], 'audio')
+            self.assertEqual((output / node['path']).read_bytes(), (root / 'audio/track.pcm').read_bytes())
 
     def test_tampered_export_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:

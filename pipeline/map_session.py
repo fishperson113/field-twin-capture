@@ -175,11 +175,12 @@ def prepare_agent(session, destination):
     graph = {'graph_version': '1.0-draft', 'session_id': summary['session_id'], 'nodes': [
         {'id': session_node_id, 'kind': 'session', 'provenance': provenance}], 'edges': []}
     image_paths = {photo['path'] for photo in photos}
+    audio_paths = {track['path'] for track in load(root / 'audio.json')} if (root / 'audio.json').exists() else set()
     for asset in assets:
-        modality = 'imu' if asset['id'] == 'imu.jsonl' else 'image' if asset['id'] in image_paths else 'metadata'
+        modality = 'imu' if asset['id'] == 'imu.jsonl' else 'image' if asset['id'] in image_paths else 'audio' if asset['id'] in audio_paths else 'metadata'
         graph['nodes'].append({'id': asset['id'], 'kind': 'raw_asset', 'modality': modality,
                                'asset_id': asset['id'], 'path': asset['path'], 'provenance': provenance,
-                               'clock_id': manifest['clock'] if modality == 'imu' else None,
+                               'clock_id': manifest['clock'] if modality in ('imu', 'audio') else None,
                                'frame_id': manifest['coordinate_frame'] if modality == 'imu' else None})
         graph['edges'].append({'from': asset['id'], 'to': session_node_id, 'relation': 'recorded_in',
                                'status': 'validated', 'provenance': {'source': 'session_manifest'}})
