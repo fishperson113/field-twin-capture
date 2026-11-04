@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IndoorMap evidence graph draft 1",
+  "type": "object",
+  "required": ["graph_version", "session_id", "nodes", "edges"],
+  "properties": {
+    "graph_version": {"const": "1.0-draft"},
+    "session_id": {"type": "string", "minLength": 1},
+    "nodes": {"type": "array", "items": {"$ref": "#/$defs/node"}},
+    "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["id", "kind", "provenance"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["session", "raw_asset", "derived_asset", "clock_mapping", "frame_transform", "twin_revision"]},
+        "modality": {"enum": ["metadata", "image", "video", "imu", "audio", "depth", "lidar", "magnetic", "other"]},
+        "asset_id": {"type": "string"},
+        "path": {"type": "string"},
+        "clock_id": {"type": ["string", "null"]},
+        "frame_id": {"type": ["string", "null"]},
+        "time_span": {
+          "type": "object", "required": ["clock_id", "start_ns", "end_ns", "source", "uncertainty_ns"],
+          "properties": {
+            "clock_id": {"type": "string"},
+            "start_ns": {"type": "integer", "minimum": 0},
+            "end_ns": {"type": "integer", "minimum": 0},
+            "source": {"enum": ["sensor_timestamp", "exposure", "sample_index_mapping", "capture_interval", "estimated"]},
+            "uncertainty_ns": {"type": ["integer", "null"], "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "input_ids": {"type": "array", "items": {"type": "string"}},
+        "attributes": {"type": "object"},
+        "provenance": {
+          "type": "object", "required": ["source", "synthetic"],
+          "properties": {"source": {"type": "string"}, "synthetic": {"type": "boolean"}, "tool_version": {"type": ["string", "null"]}},
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "edge": {
+      "type": "object", "required": ["from", "to", "relation", "status", "provenance"],
+      "properties": {
+        "from": {"type": "string"}, "to": {"type": "string"},
+        "relation": {"enum": ["recorded_in", "temporal_association", "derived_from", "observes", "transformed_by", "supports", "contradicts"]},
+        "status": {"enum": ["candidate", "validated", "rejected"]},
+        "provenance": {"type": "object", "required": ["source"], "properties": {"source": {"type": "string"}}},
+        "attributes": {"type": "object"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

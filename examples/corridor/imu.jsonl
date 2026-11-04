@@ -1,0 +1,4 @@
+{"sensor":"accelerometer","t_ns":1000000000,"values":[0,0,9.80665],"accuracy":3}
+{"sensor":"gyroscope","t_ns":1000000000,"values":[0,0,0],"accuracy":3}
+{"sensor":"accelerometer","t_ns":1005000000,"values":[0,0,9.80665],"accuracy":3}
+{"sensor":"gyroscope","t_ns":1005000000,"values":[0,0,0],"accuracy":3}

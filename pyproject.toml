@@ -1,0 +1,6 @@
+[project]
+name = "indoor-map-pipeline"
+version = "0.1.0"
+description = "Offline capture validation and agent evidence packaging"
+requires-python = ">=3.11"
+dependencies = []

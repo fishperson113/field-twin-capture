@@ -1,0 +1,15 @@
+# Research baseline and implementation boundary
+
+Current scope is phone-side capture and a portable export contract only. Reconstruction and the augmented digital-twin loop are future consumers deployed in an environment the user will choose later. No reconstruction worker, GPU service or backend is required now. Read `capture-scope.md` for the active implementation boundary; research roadmaps below are retained for reference.
+
+Research input: a user-supplied indoor field-mapping research note, read on 2026-11-04. Original attachments are retained locally and excluded from the public repository. Research claims are planning inputs, not benchmark results verified by this project. Public OSS references are listed in `oss-integration.md`.
+
+The project follows Android capture → versioned session → agent reconstruction → portable geometry. Native sensor recording avoids the browser's sampling limitations. Raw observations are retained so the data contract survives model changes.
+
+Current POC implementation: Kotlin/Compose UI, ViewModel/StateFlow, SensorManager recorder, CameraX JPEG capture, optional AudioRecord PCM/anchors, landmark/revisit observations, persisted sessions and ZIP export with hashes/graph. Python validates legacy v1.0 and phone v1.1 metadata, audio lengths, paths, asset integrity and graph references. Synthetic fixtures and repository-local skill remain. See `poc-capture.md` for boundaries and unverified hardware behavior; no fusion or reconstruction has run.
+
+Next: CameraX full-resolution capture with intrinsics and exposure timestamp; optional audio/capability detection; sensor/camera extrinsics; measured sensor rate and IMU calibration; multimodal graph augmentation; replaceable odometry and MapAnything adapters; evaluation against a surveyed 47.4 m corridor. Preserve uncertainty and failure states. The source document suggests MapAnything experimentation and later GNIO/TLIO/SSIO, but no odometry model is mandatory. These require model source, weights, licenses and compatible GPU/runtime verification before integration.
+
+Later: pose-graph optimization combining odometry covariance and manual loop closures, magnetic fingerprint proposals with user verification, multi-session alignment, floor/wall extraction. No raw-IMU double integration is presented as reliable indoor localization. MapAnything, RoNIN, GNIO, SSIO, VI3 and FloorSAM are not bundled or called by the current starter.
+
+The archived Java draft paused outside foreground and recorded pause/resume events, with only thumbnail camera intents. It was not device-tested. For the Kotlin implementation, add lifecycle-safe capture, atomic persistence/recovery, calibrated CameraX images, storage monitoring and physical-device tests. The chosen product is an independent multimodal survey app supporting an agent digital-twin loop. There is no automatic 2D fallback rule. See `multimodal-representation.md` for the shared evidence graph, clock/frame relationships and derived-data provenance. Keep phone capture lightweight; run heavy models externally. RoNIN is a reference adapter, not a mandatory model choice.
