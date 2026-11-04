@@ -51,11 +51,13 @@ class SurveyViewModel(application: Application) : AndroidViewModel(application) 
     fun writeExport(uri: Uri?) {
         val file = pendingExport ?: return
         pendingExport = null
-        if (uri == null) { recorder.message("Đã hủy xuất; session vẫn lưu trên máy"); return }
+        if (uri == null) { file.delete(); recorder.message("Đã hủy xuất; session vẫn lưu trên máy"); return }
         task {
             withContext(Dispatchers.IO) {
-                val out = getApplication<Application>().contentResolver.openOutputStream(uri) ?: error("Không mở được đích xuất")
-                out.use { output -> file.inputStream().use { it.copyTo(output) } }
+                try {
+                    val out = getApplication<Application>().contentResolver.openOutputStream(uri) ?: error("Không mở được đích xuất")
+                    out.use { output -> file.inputStream().use { it.copyTo(output) } }
+                } finally { file.delete() } // Only the generated cache ZIP; original session remains intact.
             }
             recorder.message("Đã xuất ZIP; session gốc vẫn lưu trên máy.")
         }
