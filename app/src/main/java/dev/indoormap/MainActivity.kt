@@ -1,9 +1,11 @@
 package dev.indoormap
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.hardware.camera2.CameraCharacteristics
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -59,6 +61,12 @@ private fun SurveyScreen(model: SurveyViewModel) {
     var capture by remember { mutableStateOf<ImageCapture?>(null) }
     val executor = remember { Executors.newSingleThreadExecutor() }
     DisposableEffect(Unit) { onDispose { executor.shutdown() } }
+    DisposableEffect(state.recording) {
+        val window = (context as? Activity)?.window
+        if (state.recording) window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        else window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        onDispose { window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
+    }
     val cameraPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
         cameraGranted = it; if (!it) model.message("Không có quyền camera; vẫn có thể thu IMU")
     }

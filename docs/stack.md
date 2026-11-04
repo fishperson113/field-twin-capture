@@ -37,7 +37,7 @@ Version hiện ghim: Kotlin và Compose compiler 2.1.10, AGP 8.9.2, Gradle 8.11.
 
 ## Quyết định đã rõ và phần để sau
 
-App riêng, project hiện nằm trong workspace `indoor-map`; không sửa repo Android cũ. Không có câu hỏi nghiệp vụ nào chặn việc rà khung và hợp đồng xuất. Môi trường dựng, consumer output và tiêu chí reconstruction để người dùng chọn sau, không chặn triển khai phần thu. Trước khi nối recorder cần biết điện thoại thử nghiệm và thống nhất profile khảo sát; chưa tự chọn ngưỡng hoặc bật audio mặc định.
+App riêng, project `indoor-map`; không sửa repo Android cũ. Môi trường dựng, consumer output và tiêu chí reconstruction để người dùng chọn sau. Recorder POC đã nối; profile khởi đầu yêu cầu IMU 200 Hz, JPEG thủ công, PCM 16 kHz mono khi người dùng bật audio (mặc định tắt). Đây là profile thử nghiệm, không ngưỡng đảm bảo chất lượng. Cần điện thoại thực tế để đo và điều chỉnh trước field trip.
 
 Không mở rộng backend, không chạy mô hình tốn credit, không xuất bản, không build APK trên máy này. APK sẽ build bằng GitHub Actions. Trước khi yêu cầu mới này đến, đã thử Gradle nhưng timeout lúc tải distribution; chưa compile và chưa tạo APK.
 

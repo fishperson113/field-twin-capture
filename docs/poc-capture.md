@@ -8,7 +8,7 @@
 4. Chụp JPEG gốc từ CameraX; đặt tên mốc và bấm thêm mốc. “Quay lại mốc” dùng tên mốc đã thêm, là quan sát thủ công chứ không giải pose graph.
 5. Dừng và lưu. Chọn session đã lưu để xuất ZIP qua Android document picker. App không có quyền Internet và không upload dữ liệu.
 
-Rời foreground dừng phiên và đánh dấu interrupted. Sau process death, mở app sẽ nhận diện manifest còn recording và cho xuất dữ liệu đã lưu, với cảnh báo mất phần buffer cuối. Không tự thu nền. Session lưu trong app-private storage; gỡ app sẽ mất dữ liệu chưa xuất. Danh sách UI hiện tối đa 10 session gần nhất. Chưa có thao tác xóa session trong POC.
+App giữ màn hình sáng trong lúc thu để tránh tự khóa giữa phiên; khóa màn hình hoặc rời foreground vẫn dừng phiên và đánh dấu interrupted. Sau process death, mở app sẽ nhận diện manifest còn recording và cho xuất dữ liệu đã lưu, với cảnh báo mất phần buffer cuối. Không tự thu nền. Session lưu trong app-private storage; gỡ app sẽ mất dữ liệu chưa xuất. Danh sách UI hiện tối đa 10 session gần nhất. Chưa có thao tác xóa session trong POC.
 
 ## Gói xuất v1.1
 

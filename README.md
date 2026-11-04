@@ -6,7 +6,7 @@ App khảo sát Android độc lập, tập trung biểu diễn dữ liệu mult
 
 Stack phần thu: Kotlin/Compose + ViewModel/StateFlow, CameraX/SensorManager cho điện thoại phổ thông. Python/uv hiện chỉ phục vụ kiểm tra hợp đồng xuất bằng fixture. MapAnything và các OSS dựng hình chỉ là nghiên cứu cho consumer tương lai, chưa phải hạng mục triển khai. Bắt đầu từ [ranh giới phần thu](docs/capture-scope.md), [stack](docs/stack.md) và [hợp đồng dữ liệu](docs/multimodal-representation.md).
 
-Không build APK trên máy này. Đã chuẩn bị [GitHub Actions](.github/workflows/build-apk.yml) để build debug APK và lưu artifact `app-debug`, giống cách repo Kotlin đang dùng. Chưa push/chạy CI. Hướng dẫn build cục bộ bên dưới chỉ là tham chiếu cho phát triển về sau.
+Source đã được push lên [repo public](https://github.com/fishperson113/field-twin-capture). [GitHub Actions](https://github.com/fishperson113/field-twin-capture/actions/workflows/build-apk.yml) chạy Android export tests, Python contract tests và build debug APK, lưu artifact `app-debug` trong 14 ngày. Các lần chạy thành công có artifact để tải và cài thử; xem trạng thái commit mới nhất trong tab Actions. Không build APK trên máy hiện tại. Hướng dẫn build cục bộ bên dưới chỉ là tham chiếu cho phát triển về sau.
 
 ## Chạy Android
 
