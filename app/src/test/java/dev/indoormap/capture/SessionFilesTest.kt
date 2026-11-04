@@ -48,4 +48,14 @@ class SessionFilesTest {
         SessionFiles.write(file, JSONObject().put("value", 2))
         assertEquals(2, SessionFiles.json(file).getInt("value"))
     }
+    @Test(expected = IllegalStateException::class) fun missingPhotoCannotBeSilentlyExported() {
+        val root = session("complete")
+        File(root, "photos.json").writeText("[{\"path\":\"images/missing.jpg\",\"request_t_ns\":1,\"returned_t_ns\":2}]")
+        SessionFiles.export(root, File(temp.root, "missing.zip"))
+    }
+    @Test(expected = IllegalArgumentException::class) fun cannotExportPhotoOutsideSession() {
+        val root = session("complete")
+        File(root, "photos.json").writeText("[{\"path\":\"../outside.jpg\",\"request_t_ns\":1,\"returned_t_ns\":2}]")
+        SessionFiles.export(root, File(temp.root, "traversal.zip"))
+    }
 }

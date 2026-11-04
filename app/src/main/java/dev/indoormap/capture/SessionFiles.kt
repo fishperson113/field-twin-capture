@@ -9,6 +9,12 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 object SessionFiles {
+    private fun evidence(root: File, relative: String): File {
+        val candidate = File(root, relative)
+        require(!File(relative).isAbsolute && candidate.canonicalPath.startsWith(root.canonicalPath + File.separator)) { "Evidence path outside session" }
+        check(candidate.isFile) { "Missing evidence: $relative" }
+        return candidate
+    }
     fun write(file: File, value: Any) {
         val atomic = AtomicFile(file)
         val stream = atomic.startWrite()
@@ -36,6 +42,17 @@ object SessionFiles {
         val provenance = JSONObject().put("source", "phone_capture").put("synthetic", false)
         val photos = JSONArray(File(root, "photos.json").readText())
         val tracks = JSONArray(File(root, "audio.json").readText())
+        evidence(root, "imu.jsonl")
+        for (i in 0 until photos.length()) {
+            val photo = photos.getJSONObject(i)
+            evidence(root, photo.getString("path"))
+            check(photo.getLong("returned_t_ns") >= photo.getLong("request_t_ns")) { "Invalid camera capture interval" }
+        }
+        for (i in 0 until tracks.length()) {
+            val track = tracks.getJSONObject(i)
+            val pcm = evidence(root, track.getString("path")); evidence(root, track.getString("anchors_path"))
+            check(pcm.length() == track.getLong("bytes") && pcm.length() % 2L == 0L) { "PCM size mismatch" }
+        }
         nodes.put(JSONObject().put("id", sessionNode).put("kind", "session").put("provenance", provenance))
         val excluded = setOf("index.json", "evidence-graph.json", "EXPORT_README.txt")
         val files = root.walkTopDown().filter { it.isFile && it.name !in excluded && !it.name.endsWith(".bak") && !it.name.endsWith(".new") }.toList().sortedBy { it.path }
